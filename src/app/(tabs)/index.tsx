@@ -1,31 +1,49 @@
-import { StyleSheet } from 'react-native';
+import { Link } from "expo-router";
+import { View, Text, Button, TouchableHighlight } from "react-native";
 
-import EditScreenInfo from '@components/EditScreenInfo';
-import { Text, View } from '@components/Themed';
-
-export default function TabOneScreen() {
+const App = () => {
+  console.log("App component rendered");
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+        Welcome to the App
+      </Text>
+      <Text
+        style={{
+          fontSize: 16,
+          color: "gray",
+          padding: 16,
+          textAlign: "center",
+        }}
+      >
+        This is the main screen inside Tabs. To view the standalone screens,
+        please tap on the below selections.
+      </Text>
+      <View style={{ paddingTop: 20, flexDirection: "column", gap: 10 }}>
+        <Link href="/home" asChild>
+          <TouchableHighlight
+            style={{ padding: 10, backgroundColor: "#007BFF", borderRadius: 5 }}
+          >
+            <Text>Go to Home Screen</Text>
+          </TouchableHighlight>
+        </Link>
+        <Link href="/about" asChild>
+          <TouchableHighlight
+            style={{ padding: 10, backgroundColor: "#007BFF", borderRadius: 5 }}
+          >
+            <Text>Go to About Us</Text>
+          </TouchableHighlight>
+        </Link>
+        <Link href="/contactUs" asChild>
+          <TouchableHighlight
+            style={{ padding: 10, backgroundColor: "#007BFF", borderRadius: 5 }}
+          >
+            <Text>Go to Contact Us</Text>
+          </TouchableHighlight>
+        </Link>
+      </View>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+export default App;

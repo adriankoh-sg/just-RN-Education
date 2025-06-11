@@ -1,18 +1,36 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import React from "react";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { Link, router, Tabs } from "expo-router";
+import { Linking, Pressable } from "react-native";
 
-import Colors from '@constants/Colors';
-import { useColorScheme } from '@components/useColorScheme';
-import { useClientOnlyValue } from '@components/useClientOnlyValue';
+import Colors from "@constants/Colors";
+import { useColorScheme } from "@components/useColorScheme";
+import { CONTACTS, NAVIGATION } from "@constants/config";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof MaterialIcons>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialIcons size={28} style={{ marginBottom: -3 }} {...props} />;
+}
+
+const CreateTabBarButton = (url: string) => {
+  return (props: any) => (
+    <Pressable
+      {...props}
+      onPress={() => {
+        Linking.openURL(url);
+      }}
+    />
+  );
+}
+
+const WalletButton = () => {
+  return (props: any) => (
+      <Pressable {...props} onPress={() => router.navigate("/wallet")}>
+      </Pressable>
+  );
 }
 
 export default function TabLayout() {
@@ -21,16 +39,15 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerTitle: NAVIGATION.HOME.title,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -38,7 +55,7 @@ export default function TabLayout() {
                   <FontAwesome
                     name="info-circle"
                     size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
+                    color={Colors[colorScheme ?? "light"].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
@@ -48,10 +65,34 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="walletTab"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerTitle: NAVIGATION.WALLET.title,
+          tabBarIcon: ({ color }) => <TabBarIcon name="wallet" color={color} />,
+          tabBarButton: WalletButton()
+        }}
+      />
+      <Tabs.Screen
+        name="call"
+        options={{
+          headerTitle: NAVIGATION.CALL.title,
+          tabBarIcon: ({ color }) => <TabBarIcon name="call" color={color} />,
+          tabBarButton: CreateTabBarButton(CONTACTS.TEL)
+        }}
+      />
+      <Tabs.Screen
+        name="sms"
+        options={{
+          headerTitle: NAVIGATION.SMS.title,
+          tabBarIcon: ({ color }) => <TabBarIcon name="sms" color={color} />,
+          tabBarButton: CreateTabBarButton(CONTACTS.SMS)
+        }}
+      />
+      <Tabs.Screen
+        name="hub"
+        options={{
+          headerTitle: NAVIGATION.HUB.title,
+          tabBarIcon: ({ color }) => <TabBarIcon name="more" color={color} />,
         }}
       />
     </Tabs>
